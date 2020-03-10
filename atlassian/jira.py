@@ -1,5 +1,5 @@
 # coding=utf-8
-import logging
+import logging, urllib
 
 from requests.exceptions import HTTPError
 
@@ -2176,3 +2176,28 @@ class Jira(AtlassianRestAPI):
         
         print("No-op")
         return None
+
+    def get_issue(self, issue_id: str, **kwargs):
+        url = "rest/api/3/issue/{issueIdOrKey}".format(
+            issueIdOrKey = issue_id
+        )
+
+        param = "fields"
+        if param in kwargs:
+            assert isinstance(kwargs[param], (str, list, set, tuple)), "Need to provide %s as a string or list-like object" % param
+            if isinstance(kwargs[param], str):
+                url += "?{param}={options}".format(
+                    param=param,
+                    options=urllib.parse.quote(kwargs[param])
+                )
+            else:
+                url += "?{param}={options}".format(
+                    param=param,
+                    options=urllib.parse.quote(",".join(kwargs[param]))
+                )
+
+        return self.get(url)
+        
+    def get_attachments(self, attachment: str):
+        url = "secure/attachment/{id}".format(id=attachment)
+        return self.get(url)
