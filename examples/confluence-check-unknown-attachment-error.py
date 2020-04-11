@@ -4,10 +4,8 @@ from atlassian import Confluence
 """This example how to detect unknown-attachments errors"""
 
 confluence = Confluence(
-    url='http://localhost:8090',
-    username='admin',
-    password='admin',
-    timeout=185)
+    url="http://localhost:8090", username="admin", password="admin", timeout=185
+)
 
 
 def get_all_pages_ids(conf, space_key):
@@ -17,7 +15,9 @@ def get_all_pages_ids(conf, space_key):
     flag = True
     step = 0
     while flag:
-        values = conf.get_all_pages_from_space(space=space_key, start=step * limit, limit=limit)
+        values = conf.get_all_pages_from_space(
+            space=space_key, start=step * limit, limit=limit
+        )
         step += 1
 
         if len(values) == 0:
@@ -25,7 +25,7 @@ def get_all_pages_ids(conf, space_key):
             print("Extracted all pages excluding restricts")
         else:
             for value in values:
-                page_ids.append(value.get('id'))
+                page_ids.append(value.get("id"))
 
     return page_ids
 
@@ -45,8 +45,8 @@ def check_unknown_attachment_in_space(confluence, space_key):
             print(link)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     space_list = confluence.get_all_spaces()
     for space in space_list:
-        print("Start review {} space".format(space['key']))
-        check_unknown_attachment_in_space(confluence, space['key'])
+        print("Start review {} space".format(space["key"]))
+        check_unknown_attachment_in_space(confluence, space["key"])

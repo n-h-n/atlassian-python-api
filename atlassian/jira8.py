@@ -9,7 +9,9 @@ log = logging.getLogger(__name__)
 class Jira8(AtlassianRestAPI):
 
     # API/2 Get permissions
-    def get_permissions(self, project_id=None, project_key=None, issue_id=None, issue_key=None):
+    def get_permissions(
+        self, project_id=None, project_key=None, issue_id=None, issue_key=None
+    ):
         """
         Returns all permissions in the system and whether the currently logged in user has them.
         You can optionally provide a specific context
@@ -21,17 +23,17 @@ class Jira8(AtlassianRestAPI):
         :param issue_key: str
         :return:
         """
-        url = 'rest/api/2/mypermissions'
+        url = "rest/api/2/mypermissions"
         params = {}
 
         if project_id:
-            params['projectId'] = project_id
+            params["projectId"] = project_id
         if project_key:
-            params['projectKey'] = project_key
+            params["projectKey"] = project_key
         if issue_id:
-            params['issueId'] = issue_id
+            params["issueId"] = issue_id
         if issue_key:
-            params['issueKey'] = issue_key
+            params["issueKey"] = issue_key
 
         return self.get(url, params=params)
 
@@ -42,7 +44,7 @@ class Jira8(AtlassianRestAPI):
 
         :return: All permissions
         """
-        url = 'rest/api/2/permissions'
+        url = "rest/api/2/permissions"
 
         return self.get(url)
 
@@ -56,21 +58,21 @@ class Jira8(AtlassianRestAPI):
         :param key_filter: str
         :return: list or item
         """
-        url = 'rest/api/2/application-properties'
+        url = "rest/api/2/application-properties"
         params = {}
 
         if key:
-            params['key'] = key
+            params["key"] = key
         if permission_level:
-            params['permissionLevel'] = permission_level
+            params["permissionLevel"] = permission_level
         if key_filter:
-            params['keyFilter'] = key_filter
+            params["keyFilter"] = key_filter
 
         return self.get(url, params=params)
 
     def set_property(self, property_id, value):
-        url = 'rest/api/2/application-properties/{}'.format(property_id)
-        data = {'id': property_id, 'value': value}
+        url = "rest/api/2/application-properties/{}".format(property_id)
+        data = {"id": property_id, "value": value}
 
         return self.put(url, data=data)
 
@@ -80,7 +82,7 @@ class Jira8(AtlassianRestAPI):
 
         :return:
         """
-        url = 'rest/api/2/application-properties/advanced-settings'
+        url = "rest/api/2/application-properties/advanced-settings"
 
         return self.get(url)
 
@@ -91,7 +93,7 @@ class Jira8(AtlassianRestAPI):
 
         :return:
         """
-        url = 'rest/api/2/applicationrole'
+        url = "rest/api/2/applicationrole"
 
         return self.get(url)
 
@@ -102,7 +104,7 @@ class Jira8(AtlassianRestAPI):
         :param role_key: str
         :return:
         """
-        url = 'rest/api/2/applicationrole/{}'.format(role_key)
+        url = "rest/api/2/applicationrole/{}".format(role_key)
 
         return self.get(url)
 
@@ -114,7 +116,7 @@ class Jira8(AtlassianRestAPI):
         :param attachment_id: int
         :return:
         """
-        url = 'rest/api/2/attachment/{}'.format(attachment_id)
+        url = "rest/api/2/attachment/{}".format(attachment_id)
 
         return self.get(url)
 
@@ -125,7 +127,7 @@ class Jira8(AtlassianRestAPI):
         :param attachment_id: int
         :return: if success, return None
         """
-        url = 'rest/api/2/attachment/{}'.format(attachment_id)
+        url = "rest/api/2/attachment/{}".format(attachment_id)
 
         return self.delete(url)
 
@@ -136,7 +138,7 @@ class Jira8(AtlassianRestAPI):
 
         :return:
         """
-        url = 'rest/api/2/attachment/meta'
+        url = "rest/api/2/attachment/meta"
 
         return self.get(url)
 
@@ -149,14 +151,14 @@ class Jira8(AtlassianRestAPI):
         :param update_history: bool (if true then the user's project history is updated)
         :return:
         """
-        url = 'rest/api/2/issue'
-        data = {'fields': fields}
+        url = "rest/api/2/issue"
+        data = {"fields": fields}
         params = {}
 
         if update_history is True:
-            params['updateHistory'] = 'true'
+            params["updateHistory"] = "true"
         else:
-            params['updateHistory'] = 'false'
+            params["updateHistory"] = "false"
 
         return self.post(url, params=params, data=data)
 
@@ -168,8 +170,8 @@ class Jira8(AtlassianRestAPI):
         :param list_of_issues_data: list of JSON data
         :return:
         """
-        url = 'rest/api/2/issue/bulk'
-        data = {'issueUpdates': list_of_issues_data}
+        url = "rest/api/2/issue/bulk"
+        data = {"issueUpdates": list_of_issues_data}
 
         return self.post(url, data=data)
 
@@ -183,15 +185,15 @@ class Jira8(AtlassianRestAPI):
         :param delete_subtasks:
         :return:
         """
-        url = 'rest/api/2/issue/{}'.format(issue_id_or_key)
+        url = "rest/api/2/issue/{}".format(issue_id_or_key)
         params = {}
 
         if delete_subtasks is True:
-            params['deleteSubtasks'] = 'true'
+            params["deleteSubtasks"] = "true"
         else:
-            params['deleteSubtasks'] = 'false'
+            params["deleteSubtasks"] = "false"
 
-        log.warning('Removing issue {}...'.format(issue_id_or_key))
+        log.warning("Removing issue {}...".format(issue_id_or_key))
 
         return self.delete(url, params=params)
 
@@ -206,18 +208,20 @@ class Jira8(AtlassianRestAPI):
         :param notify_users: bool
         :return:
         """
-        url = 'rest/api/2/issue/{}'.format(issue_id_or_key)
+        url = "rest/api/2/issue/{}".format(issue_id_or_key)
         params = {}
-        data = {'update': fields}
+        data = {"update": fields}
 
         if notify_users is True:
-            params['notifyUsers'] = 'true'
+            params["notifyUsers"] = "true"
         else:
-            params['notifyUsers'] = 'false'
+            params["notifyUsers"] = "false"
 
         return self.put(url, data=data, params=params)
 
-    def get_issue(self, issue_id_or_key, fields=None, properties=None, update_history=True):
+    def get_issue(
+        self, issue_id_or_key, fields=None, properties=None, update_history=True
+    ):
         """
         Returns a full representation of the issue for the given issue key
         By default, all fields are returned in this get-issue resource
@@ -228,16 +232,16 @@ class Jira8(AtlassianRestAPI):
         :param update_history: bool
         :return: issue
         """
-        url = 'rest/api/2/issue/{}'.format(issue_id_or_key)
+        url = "rest/api/2/issue/{}".format(issue_id_or_key)
         params = {}
 
         if fields is not None:
-            params['fields'] = fields
+            params["fields"] = fields
         if properties is not None:
-            params['properties'] = properties
+            params["properties"] = properties
         if update_history is True:
-            params['updateHistory'] = 'true'
+            params["updateHistory"] = "true"
         if update_history is False:
-            params['updateHistory'] = 'false'
+            params["updateHistory"] = "false"
 
         return self.get(url, params=params)
