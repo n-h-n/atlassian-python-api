@@ -961,6 +961,17 @@ class Confluence(AtlassianRestAPI):
         data = {"value": storage, "representation": "storage"}
         return self.post("rest/api/contentbody/convert/view", data=data)
 
+    def convert_content_from_to(self, content, from_type, to_type):
+        """
+        Convert content from Confluence {from_type} to {to_type}
+        :param content:
+        :param from_type:
+        :param to_type:
+        :return:
+        """
+        data = {"value": content, "representation": from_type}
+        return self.post("rest/api/contentbody/convert/{to}".format(to=to_type), data=data)
+
     def set_page_property(self, page_id, data):
         """
         Set the page (content) property e.g. add hash parameters
